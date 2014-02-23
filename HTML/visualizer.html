@@ -1,0 +1,152 @@
+<html>
+<head>
+    <script src="./socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="stylesheet.css">        
+</head>
+
+<body>
+
+    <div id="gameArea">
+        <canvas id="gameCanvas"></canvas>
+        <div id="statsPanel"></div>
+    </div>
+    <script>
+        function resizeGame() {
+            var gameArea = document.getElementById('gameArea');
+            var widthToHeight = 4 / 3;
+            var newWidth = window.innerWidth;
+            var newHeight = window.innerHeight;
+            var newWidthToHeight = newWidth / newHeight;
+            
+            if (newWidthToHeight > widthToHeight) {
+                newWidth = newHeight * widthToHeight;
+                gameArea.style.height = newHeight + 'px';
+                gameArea.style.width = newWidth + 'px';
+            } else {
+                newHeight = newWidth / widthToHeight;
+                gameArea.style.width = newWidth + 'px';
+                gameArea.style.height = newHeight + 'px';
+            }
+            
+            gameArea.style.marginTop = (-newHeight / 2) + 'px';
+            gameArea.style.marginLeft = (-newWidth / 2) + 'px';
+            
+            var gameCanvas = document.getElementById('gameCanvas');
+            gameCanvas.width = newWidth;
+            gameCanvas.height = newHeight;
+        }
+        
+        window.addEventListener('resize', resizeGame, false);
+        window.addEventListener('orientationchange', resizeGame, false);
+        resizeGame();
+        
+        ////
+        
+        setInterval(function(){
+            var array = [];
+            for (var i=0;i<100;i++){
+                array.push(Math.random())
+            }
+        visualizeArray(array);
+        
+        },500);
+        
+        //while (1==1){
+            //var a=1;
+          //  }
+        
+        function visualizeArray(array){
+            var ee = ">>visualizeArray: "; //console log cursor
+            if (!(array instanceof Array)){
+                alert("input error: visualizeArray")
+                return;
+            }
+            
+            var canvas = document.getElementById("gameCanvas");
+            var context = canvas.getContext("2d");
+            
+            var arrlen = array.length;        
+           
+            // calc num of cols and rows in approx ratio 4:3
+            var cols = Math.ceil(Math.sqrt((4/3)*(arrlen)))
+            var rows = Math.ceil(arrlen/cols)
+            
+            //console.log(ee+"cols: "+ cols + "  rows: " + rows);
+          
+            var boxwidth = canvas.width/cols
+            var boxheight = canvas.height/rows
+            
+            var d = Date.now();
+            
+            var count=0;
+            for (var r=0;r<rows;r++){
+                for (var c=0;c<cols;c++){
+                    if (count<arrlen){
+                        count++;
+                        var red = 255*(count/arrlen);
+                        var green = Math.round(array[count]*255)
+                        var blue = "0";
+                        context.fillStyle="rgb("+red+","+green+","+blue+")"; //function that returns color
+                        context.fillRect(c*boxwidth, r*boxheight, boxwidth-1, boxwidth-1)
+                    }
+                }
+            }
+            //console.log(ee+ "drawtime: "+(Date.now()-d)+" ms"); 
+        }
+        /*
+        context.beginPath();
+        context.moveTo(0, 40);
+        context.lineTo(240, 40);
+        context.strokeStyle = "#000";
+        context.stroke();
+        */
+        /*
+        var my_gradient = context.createLinearGradient(0, 0, 300, 0);
+        my_gradient.addColorStop(0, "black");
+        my_gradient.addColorStop(1, "white");
+        context.fillStyle = my_gradient;
+        context.fillRect(0, 0, 300, 225)
+        */
+        
+        
+        ////
+        
+    </script>
+
+    <script>
+
+        var socket = io.connect('http://localhost:3000');
+
+        socket.on('connect', print("connect"))  
+
+        socket.on('news', print("news"));
+
+        socket.on('xyz', function(data, cback) {
+            cback("got your message");
+            console.log("data: "+data);
+            //console.log("cback: "+cback);
+        });
+
+        //socket.on('xyz', function(data, cback) {});
+
+
+        /*function (data) {
+        socket.emit('my other event', { my: 'data' });
+        socket.send("test");
+        }
+        */
+
+        function print (e){
+        console.log(e);
+        }
+
+
+
+
+
+
+    </script>
+  
+</body>
+
+</html>  

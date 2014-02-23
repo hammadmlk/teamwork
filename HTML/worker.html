@@ -1,0 +1,110 @@
+<html>
+<head>
+    <script src="./socket.io/socket.io.js"></script>
+    <script src="./visualizeArray.js"></script>
+
+    <link rel="stylesheet" href="stylesheet.css">        
+</head>
+
+<body>
+
+    <div id="worker">
+        <h1 id="heading">  Volunteer Worker Client  </h1>
+        <p id="desc">  When you click 'connect to server' button. The browser will connect our server and help it solve a password cracking job. The server will use your computational resources...</p>
+        
+        <button onclick="connect()">connect with server</button>
+        
+        <h2>Stuff for nerds</h2>
+        <p>connect: <span id="connect"> pending</span></p>
+        <p>Getjob: <span id="getJob"> pending </span></p>
+        <p>dojob: <span id="doJob"> pending</span></p>
+        <p>respondToJob: <span id="respondToJob"> pending</span></p>
+        <p>drawSolution: <span id="drawSolution"> pending</span></p>
+        
+        <div id="visualizeArea">
+            <canvas id="gameCanvas"></canvas>
+        </div>
+        
+    </div>
+    
+    <script>
+        var socket; 
+        function connect(){
+            socket = io.connect('http://localhost:3000');
+            
+            // on socket connect, run function msg.
+            socket.on('connect', msg("connect", "connected"))  
+            
+            socket.on('job', function(data) {
+                gotJob(data, socket);
+            });
+            
+            socket.on('solutionSpace', function(solutionSpaceArray) {
+                drawSolution(solutionSpaceArray);
+            });
+            
+            // code here to refresh page on server disconnect?
+            
+
+        }
+
+
+        /*function (data) {
+        socket.emit('my other event', { my: 'data' });
+        socket.send("test");
+        }
+        */
+        function drawSolution (solutionSpaceArray){
+            msg("drawSolution", "drew"+Math.random())
+            visualizeArray(solutionSpaceArray);
+        }
+        
+        function gotJob(jobData, socket){
+            msg("getJob", "recieved job: "+jobData)
+            var jobProgress=0;
+            //print(jobProgress);
+            window.intervalHandle = setInterval(function(){
+                //window.jobProgress;
+                //jobProgress++;
+                //print(jobProgress);
+                ans = doJob(jobData, jobProgress)
+                jobProgress = ans.jobProgress;
+                jobData = ans.jobData;
+                if (jobData.status == "done"){
+                    respondToJob(jobData, socket);
+                    clearInterval(window.intervalHandle);
+                }
+            },100); 
+        }
+        
+        function doJob(jobData, jobProgress){
+            //todo
+            msg("doJob", "func reached. Progress: "+jobProgress)
+            
+            if (jobProgress == 50){
+                jobData.status = "done"
+            }
+            
+            var ans = {};
+            ans.jobProgress = ++jobProgress;
+            ans.jobData = jobData
+            return ans;
+        }
+
+        //respond on job by sending jaoData on socket
+        function respondToJob(jobData, socket){
+            msg("respondToJob", "entered")
+            socket.emit('jobResponse', jobData)
+        }
+        
+        function print (e){
+        console.log(e);
+        }
+        function msg (elemId, text){
+            document.getElementById(elemId).innerHTML = text;
+        }
+        
+    </script>
+</body>
+
+</html>  

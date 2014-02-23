@@ -1,0 +1,87 @@
+<html>
+<head>
+    <script src="./socket.io/socket.io.js"></script>
+    <script src="./visualizeArray.js"></script>
+
+    <link rel="stylesheet" href="stylesheet.css">        
+</head>
+
+<body>
+
+    <div id="taskGiver">
+        <h1 id="heading">  Task Giver </h1>
+        <p id="desc"> Enter a hash in the box below and press 'Crack it'. Our server will utilize the computational resources of volunteer computers over the internet to crack it for you.</p>
+        
+        <input id="hash" value="enter hash here"></input>
+        <button onclick="connect()">crack it</button>
+        
+        <h2>Stuff for nerds</h2>
+        <p>connect: <span id="connect"> pending</span></p>
+        <p>sendHash: <span id="sendHash"> pending </span></p>
+        <p>handleAnswer: <span id="handleAnswer"> waiting for result</span></p>
+        <p>drawProgress: <span id="drawProgress"> pending</span></p>
+        
+        <div id="visualizeArea">
+            <canvas id="gameCanvas"></canvas>
+        </div>
+        
+    </div>
+    
+    <script>
+        var socket; 
+        function connect(){
+            socket = io.connect('http://localhost:3000');
+            
+            // on socket connect, run function msg.
+            socket.on('connect', msg("connect", "connected"))  
+            
+            socket.on('solutionSpace', function(solutionSpaceArray) {
+                drawProgress(solutionSpaceArray);
+            });
+            
+            socket.on('answer', function(answer) {
+                handleAnswer(answer);
+            });
+            
+            sendHash(socket);
+            
+            // code here to refresh page on server disconnect?
+
+        }
+
+
+        /*function (data) {
+        socket.emit('my other event', { my: 'data' });
+        socket.send("test");
+        }
+        */
+        function handleAnswer(answer){
+            msg("handleAnswer", "got: " + answer);
+        }
+        
+        function sendHash(socket){
+            msg("sendHash", "emiting")
+            socket.emit('hash', getHash());
+        }
+        
+        function drawProgress(solutionSpaceArray){
+            msg("drawProgress", "drew"+Math.random())
+            visualizeArray(solutionSpaceArray);
+        }
+                
+        function getHash(){
+            return document.getElementById("hash").value
+        }
+        
+        
+        function print (e){
+        console.log(e);
+        }
+        function msg (elemId, text){
+            document.getElementById(elemId).innerHTML = text;
+        }
+        
+    </script>
+</body>
+
+</html>  
