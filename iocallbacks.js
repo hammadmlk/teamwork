@@ -21,12 +21,19 @@ function start(io) {
  
     socket.on("jobResponse", print);
     
-    socket.on("hash", print);
+    socket.on("hash", function(theHash){
+        hashReceived(theHash, socket.id)
+    });
+    
+    function hashReceived(theHash, socketId){
+        console.log("args: : ",arguments.length);
+        console.log(theHash,socketId);
+    }
     
     //socket.emit('news', { hello: 'world' });
     socket.emit('xyz', "xyzdata", print);
     
-    socket.emit('job', {array:[1, 2, 3]});
+    socket.emit('job', new jobStruc("aabldl", "senderId", 4, 5000));
     
     //socket.emit('answer', "password");
     
@@ -47,6 +54,15 @@ function start(io) {
   
   
   /// start Server data structures
+  
+  function jobStruc(hash, senderId, chunkNumber, chunkSize){
+    this.hash = hash;
+    this.senderId = senderId;
+    this.chunkNumber = chunkNumber; //starts from 0
+    this.chunkSize = chunkSize;
+    this.password = "notKnown";
+    this.chunkStatus = "0"
+  }
   
   // worker class        use: var w = new Worker(id);
   function Worker (id) {
@@ -239,6 +255,7 @@ function start(io) {
     }
   }
   
+  /*
   console.log("\n\n");
   
   var TL = new TaskList();
@@ -266,7 +283,7 @@ function start(io) {
   TL.chunkSolution("sid3", 1, 2, "pas");
   TL.print();
   console.log("nextTaskChunkIndex:", TL.nextTaskChunkIndex(),"\n");
-  
+  */
   
   
   /*
@@ -315,7 +332,7 @@ function start(io) {
     console.log("disconnected");
   }
   function print (e){
-    console.log(">> print: "+e);
+    console.log(">>print: ", e);
   }
 
   function makeArray(){
