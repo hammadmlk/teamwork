@@ -31,7 +31,9 @@
         // handles:
         //  on job
         //  on solutionSpace
-    
+        
+        window.alreadyWorking = 0;
+        
         var socket; 
         function connect(){
             socket = io.connect('http://localhost:3000');
@@ -64,33 +66,57 @@
         }
         
         function gotJob(jobData, socket){
-            msg("getJob", "recieved job: "+jobData)
+            msg("getJob", "recieved job: "+ stringJobData(jobData))
+            if (window.alreadyWorking !== 0){
+                console.log("ALready working.........")
+                return
+            }else{
+                window.alreadyWorking = 1;
+            }
             var jobProgress=0;
-            //print(jobProgress);
             window.intervalHandle = setInterval(function(){
-                //window.jobProgress;
-                //jobProgress++;
-                //print(jobProgress);
                 ans = doJob(jobData, jobProgress)
                 jobProgress = ans.jobProgress;
                 jobData = ans.jobData;
-                if (jobData.status == "done"){
+                if (jobData.chunkStatus == "2"){
+                    console.log("-DONE-")
                     respondToJob(jobData, socket);
                     clearInterval(window.intervalHandle);
                 }
-            },100); 
+                else if (jobData.chunkStatus == "1"){
+                    console.log("-DONE NOT FOUND-")
+                    respondToJob(jobData, socket);
+                    clearInterval(window.intervalHandle);
+                }
+            },10);
         }
         
         function doJob(jobData, jobProgress){
             //todo
-            msg("doJob", "func reached. Progress: "+jobProgress)
+            msg("doJob", "func reached. Progress: "+jobProgress+stringJobData(jobData))
             
-            if (jobProgress == 50){
-                jobData.status = "done"
+            
+            //todo: <fix exceeding chunk range issue> change to :
+            //for (lastProgress to minof(lastProgress+100x, (chunknum+1)*chunkSize-1)???
+            for (var i = 0; i<100; i++){
+                nextPassNum = jobData.chunkSize*jobData.chunkNumber+jobProgress
+                //console.log("passnum: "+nextPassNum)
+                //console.log(decimalTo26(nextPassNum))
+                if ( /*hash*/(decimalTo26(nextPassNum)) === jobData.hash){
+                    jobData.chunkStatus = "2";
+                    jobData.password = decimalTo26(nextPassNum);
+                    console.log("pass found: "+jobData.password)
+                    
+                }
+                ++jobProgress;
+            }
+            if (jobProgress > jobData.chunkSize){
+                jobData.chunkStatus = "1"; // complete no success
+                console.log("pass not found: ")
             }
             
             var ans = {};
-            ans.jobProgress = ++jobProgress;
+            ans.jobProgress = jobProgress;
             ans.jobData = jobData
             return ans;
         }
@@ -98,6 +124,7 @@
         //respond on job by sending jaoData on socket
         function respondToJob(jobData, socket){
             msg("respondToJob", "entered")
+            window.alreadyWorking = 0;
             socket.emit('jobResponse', jobData)
         }
         
@@ -107,6 +134,50 @@
         function msg (elemId, text){
             document.getElementById(elemId).innerHTML = text;
         }
+
+        function decimalTo26(decimal){
+        // takes a decimal and returns the base 26 representation string of length 6.
+        // [input-->output],  [0 --> aaaaaa], [25 --> aaaaaz], [26 --> aaaaba], [17575 --> aaazzz]
+        // 26todec(alphabetIndex*26^place). example for bzz 1*26^2 + 25*26^1 + 25*26^0
+        // a is like 0. so aaaazz == zz just like 0007 == 7
+        
+            //print("==========");
+            var alphabets = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+            var divisor = decimal;
+            var base=26; var qoutient; var remainder;
+            var ans=[];
+            do {
+                quotient = Math.floor(divisor/base);
+                remainder = divisor%base;
+                //console.log("q:", quotient, "d:", divisor, "r:", remainder);
+                divisor = quotient;            
+                ans.push(alphabets[remainder]);
+            } while (quotient>0)
+            
+            while (ans.length<6){
+                ans.push(alphabets[0]);
+            }
+            
+            ansx="";
+            while(ans.length>0){
+                ansx+=ans.pop();
+            }
+            //print (ansx);
+            return ansx
+        };
+        
+        // makes string of jobData struc
+        function stringJobData(jobData){
+                return "|\
+                hash: " + jobData.hash + " | \
+                senderId: " + jobData.senderId + " |  \
+                chunkNum: " + jobData.chunkNumber + " | \
+                chunkSize: " + jobData.chunkSize + " | \
+                pass: " + jobData.password + " | \
+                chunkStatus: " + jobData.chunkStatus + " | ";
+            }
+            
+        
         
     </script>
 </body>
