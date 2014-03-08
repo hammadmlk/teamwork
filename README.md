@@ -12,10 +12,20 @@ note: for now peer to peer communication is ignored.
 ##Worker (HTML with socket.io):
 //documentation todo
 
-
 ##TaskGiver (HTML with socket.io):
 //documentation todo
 
-
 ##Server (node.js running socket.io):
+###Install Instruction:
+####Setup (asuming nodejs installed)
+Go to the folder where you want to put the app
+> git clone https://github.com/hammadmlk/teamwork.git
+
+> cd teamwork
+
+> npm install
+
+####Running
+> node app.js
+
 //documentation todo
