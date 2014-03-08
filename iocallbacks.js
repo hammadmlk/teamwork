@@ -95,16 +95,9 @@ function start(io) {
         workerList.changeStatus(jobData.workerId, "free")
     });
     
-    //socket.emit('job', new jobStruc("aabldl", "senderId","workerId", 4, 5000));
-        
-    //simulate periodically updating solution space. 
-    setInterval(function(){
-        array = makeArray();
-    }, 100)
-    
     //emit solution space periodically. 
     setInterval(function(){
-        socket.emit('solutionSpace', array);
+        socket.emit('solutionSpace', taskList.getChunkMap());
     }, 1000)
     
   }

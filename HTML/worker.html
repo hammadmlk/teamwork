@@ -67,6 +67,7 @@
         }
         
         function gotJob(jobData, socket){
+            "use strict"
             msg("getJob", "recieved job: "+ stringJobData(jobData))
             if (window.alreadyWorking !== 0){
                 console.log("ALready working.........")
@@ -76,7 +77,7 @@
             }
             var jobProgress=0;
             window.intervalHandle = setInterval(function(){
-                ans = doJob(jobData, jobProgress)
+                var ans = doJob(jobData, jobProgress)
                 jobProgress = ans.jobProgress;
                 jobData = ans.jobData;
                 if (jobData.chunkStatus === 2){
@@ -89,33 +90,32 @@
                     respondToJob(jobData, socket);
                     clearInterval(window.intervalHandle);
                 }
-            },1);
+            },10);
         }
         
         function doJob(jobData, jobProgress){
+            "use strict"
             //todo
             msg("doJob", "func reached. Progress: "+jobProgress+stringJobData(jobData))
-            
             
             //todo: <fix exceeding chunk range issue> change to :
             //for (lastProgress to minof(lastProgress+100x, (chunknum+1)*chunkSize-1)???
             for (var i = 0; i<10000; i++){
-                nextPassNum = jobData.chunkSize*jobData.chunkNumber+jobProgress
-                //console.log("passnum: "+nextPassNum)
-                if(jobData.chunkNumber>2023)
-                    console.log(decimalTo26(nextPassNum))
-                if ( /*hash*/(decimalTo26(nextPassNum)) === jobData.hash){
+                var nextPassNum = jobData.chunkSize*jobData.chunkNumber+jobProgress
+                
+                if (nextPassNum > jobData.chunkSize*jobData.chunkNumber + jobData.chunkSize){
+                    jobData.chunkStatus = 1; // complete no success
+                    console.log("pass not found: ", jobData.hash, " ", decimalTo26(nextPassNum))
+                    
+                    break
+                }else if ( hashComputer(decimalTo26(nextPassNum)) === jobData.hash){
                     jobData.chunkStatus = 2;
                     jobData.password = decimalTo26(nextPassNum);
                     console.log("pass found: "+jobData.password)
-                    
+                    break;
                 }
-                jobData.lastCheck = decimalTo26(nextPassNum);
+                jobData.lastCheck = decimalTo26(nextPassNum); //del
                 ++jobProgress;
-            }
-            if (jobProgress-1 > jobData.chunkSize){
-                jobData.chunkStatus = 1; // complete no success
-                console.log("pass not found: ")
             }
             
             var ans = {};
@@ -180,7 +180,12 @@
                 chunkStatus: " + jobData.chunkStatus + " | ";
             }
             
-        
+        function hashComputer (str){
+            for (var i=0; i<10000; i++){
+                i=i;
+            }
+            return str;
+        }
         
     </script>
 </body>

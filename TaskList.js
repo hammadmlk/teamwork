@@ -118,6 +118,12 @@ this.solutionAvailable = function(){
     }
     return -1;
 }
+this.getChunkMap = function(){
+    if (this.tasks.length>0){
+        return this.tasks[0].chunks
+    }
+    return [0,0,0,0,0,0];
+}
 this.print = function(){
     console.log("---TaskList Start ---");
     for (var i=0; i<this.tasks.length;i++){

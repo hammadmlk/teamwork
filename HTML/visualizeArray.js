@@ -67,9 +67,17 @@ function visualizeArray(array){
         for (var c=0;c<cols;c++){
             if (count<arrlen){
                 count++;
-                var red = 255//*(count/arrlen);
-                var green = Math.round(array[count]*255)
-                var blue = "0";
+                var red, green, blue;
+                if (array[count]==-1){
+                    red = 0; green=0; blue =0; 
+                }else if (array[count] ==0){
+                    red = 0; green=0; blue =255;
+                }else if (array[count] ==1){
+                    red = 255; green=0; blue =0;
+                }else if (array[count] ==2){
+                    red = ; green=255; blue =0;
+                }
+               
                 context.fillStyle="rgb("+red+","+green+","+blue+")"; //function that returns color
                 context.fillRect(c*boxwidth, r*boxheight, boxwidth-1, boxheight-1)
             }
