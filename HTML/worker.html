@@ -36,7 +36,7 @@
         
         var socket; 
         function connect(){
-            socket = io.connect('http://localhost:3000');
+            socket = io.connect('http://moodrhythm.com:3000/');
             
             // on socket connect, run function msg.
             socket.on('connect', msg("connect", "connected"))  
@@ -110,6 +110,7 @@
                     console.log("pass found: "+jobData.password)
                     
                 }
+                jobData.lastCheck = decimalTo26(nextPassNum);
                 ++jobProgress;
             }
             if (jobProgress-1 > jobData.chunkSize){

@@ -85,7 +85,7 @@ function start(io) {
     
     socket.on("jobResponse", function(jobData){
         //print(jobData);
-        print (jobData.chunkNumber)
+        print (jobData.chunkNumber+jobData.lastCheck)
         taskList.chunkSolution(
             jobData.senderId,
             jobData.chunkNumber,
