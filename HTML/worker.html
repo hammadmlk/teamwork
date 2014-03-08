@@ -41,6 +41,8 @@
             // on socket connect, run function msg.
             socket.on('connect', msg("connect", "connected"))  
             
+            socket.emit('newWorker', "");
+            
             socket.on('job', function(data) {
                 gotJob(data, socket);
             });
@@ -50,7 +52,6 @@
             });
             
             // code here to refresh page on server disconnect?
-            
 
         }
 
@@ -78,17 +79,17 @@
                 ans = doJob(jobData, jobProgress)
                 jobProgress = ans.jobProgress;
                 jobData = ans.jobData;
-                if (jobData.chunkStatus == "2"){
+                if (jobData.chunkStatus === 2){
                     console.log("-DONE-")
                     respondToJob(jobData, socket);
                     clearInterval(window.intervalHandle);
                 }
-                else if (jobData.chunkStatus == "1"){
+                else if (jobData.chunkStatus === 1){
                     console.log("-DONE NOT FOUND-")
                     respondToJob(jobData, socket);
                     clearInterval(window.intervalHandle);
                 }
-            },10);
+            },1);
         }
         
         function doJob(jobData, jobProgress){
@@ -98,20 +99,21 @@
             
             //todo: <fix exceeding chunk range issue> change to :
             //for (lastProgress to minof(lastProgress+100x, (chunknum+1)*chunkSize-1)???
-            for (var i = 0; i<100; i++){
+            for (var i = 0; i<10000; i++){
                 nextPassNum = jobData.chunkSize*jobData.chunkNumber+jobProgress
                 //console.log("passnum: "+nextPassNum)
-                //console.log(decimalTo26(nextPassNum))
+                if(jobData.chunkNumber>2023)
+                    console.log(decimalTo26(nextPassNum))
                 if ( /*hash*/(decimalTo26(nextPassNum)) === jobData.hash){
-                    jobData.chunkStatus = "2";
+                    jobData.chunkStatus = 2;
                     jobData.password = decimalTo26(nextPassNum);
                     console.log("pass found: "+jobData.password)
                     
                 }
                 ++jobProgress;
             }
-            if (jobProgress > jobData.chunkSize){
-                jobData.chunkStatus = "1"; // complete no success
+            if (jobProgress-1 > jobData.chunkSize){
+                jobData.chunkStatus = 1; // complete no success
                 console.log("pass not found: ")
             }
             
@@ -124,8 +126,8 @@
         //respond on job by sending jaoData on socket
         function respondToJob(jobData, socket){
             msg("respondToJob", "entered")
-            window.alreadyWorking = 0;
             socket.emit('jobResponse', jobData)
+            window.alreadyWorking = 0;
         }
         
         function print (e){
