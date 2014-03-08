@@ -75,7 +75,7 @@ function visualizeArray(array){
                 }else if (array[count] ==1){
                     red = 255; green=0; blue =0;
                 }else if (array[count] ==2){
-                    red = ; green=255; blue =0;
+                    red = 0; green=255; blue =0;
                 }
                
                 context.fillStyle="rgb("+red+","+green+","+blue+")"; //function that returns color
