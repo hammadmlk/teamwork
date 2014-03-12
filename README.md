@@ -9,6 +9,22 @@ The system consists of three parts:
 
 note: for now peer to peer communication is ignored.    
 
+##Demo:
+The first prototype is worked great. I tested the performance with variable number of machines. The plot of work-done/machine vs num-of-machines was flat (yayyy). This means that we have no bottlenecks on the server side for your distributed password cracking application.
+
+###Try it your self:
+**Open the worker on a few browsers (preferable on different machines).** 
+visit http://cornellhci.org/tailormade/teamwork/worker.html
+and click 'connect with server'
+
+**Open the taskgiver on any browser**.
+Enter a 6 alphabet (a-z only) password in the input field. And hit crack it**
+http://cornellhci.org/tailormade/teamwork/taskGiver.html.
+
+
+*The workers are now actively working on cracking the password*
+
+
 ##Worker (HTML with socket.io):
 //documentation todo
 
@@ -29,3 +45,7 @@ Go to the folder where you want to put the app
 > node app.js
 
 //documentation todo
+
+
+#Confused
+Worry not!!! Wait a month or so. As the project refines we will start properly documentating the system. For now its scope is ever changing changing and so investment on documentation not a fair bet. :)
