@@ -2,7 +2,8 @@
 <head>
     <script src="./socket.io/socket.io.js"></script>
     <script src="./visualizeArray.js"></script>
-
+    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
+    
     <link rel="stylesheet" href="stylesheet.css">        
 </head>
 
@@ -10,10 +11,13 @@
 
     <div id="taskGiver">
         <h1 id="heading">  Task Giver </h1>
-        <p id="desc"> Enter a hash in the box below and press 'Crack it'. Our server will utilize the computational resources of volunteer computers over the internet to crack it for you.</p>
+        <p id="desc"> Enter a 6 char password (use a-z only) in the box below and press 'Crack it'. Our server will utilize the computational resources of volunteer computers over the internet to crack it for you.</p>
         
-        <input id="hash" value="enter hash here"></input>
+        <input id="pass" placeholder="6 char(a-z) password"></input>
         <button onclick="connect()">crack it</button>
+        
+        <p> Hash: <span id="hash"></span> </p>
+        
         
         <h2>Stuff for nerds</h2>
         <p>connect: <span id="connect"> pending</span></p>
@@ -34,6 +38,8 @@
     
         var socket; 
         function connect(){
+            if (getHash()===-1) return;
+        
             socket = io.connect('http://moodrhythm.com:3000/');
             
             // on socket connect, run function msg.
@@ -64,8 +70,10 @@
         }
         
         function sendHash(socket){
-            msg("sendHash", "emiting")
-            socket.emit('hash', getHash());
+            if (getHash()!==-1){
+                msg("sendHash", "emiting")
+                socket.emit('hash', getHash());
+            }
         }
         
         function drawProgress(solutionSpaceArray){
@@ -74,7 +82,19 @@
         }
                 
         function getHash(){
-            return document.getElementById("hash").value
+            var pass = document.getElementById("pass").value
+            
+            if (pass.length !== 6){
+                document.getElementById("pass").value = "invalid - must be 6 chars"
+                return -1;
+            }
+            else{
+                var hash = CryptoJS.MD5(pass).toString(CryptoJS.enc.Base64);
+                
+                msg ("hash", hash);
+                            
+                return hash;
+            }
         }
         
         
@@ -84,6 +104,9 @@
         function msg (elemId, text){
             document.getElementById(elemId).innerHTML = text;
         }
+        
+        
+        
         
     </script>
 </body>

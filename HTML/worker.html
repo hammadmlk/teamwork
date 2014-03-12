@@ -2,7 +2,8 @@
 <head>
     <script src="./socket.io/socket.io.js"></script>
     <script src="./visualizeArray.js"></script>
-
+    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
+    
     <link rel="stylesheet" href="stylesheet.css">        
 </head>
 
@@ -90,7 +91,7 @@
                     respondToJob(jobData, socket);
                     clearInterval(window.intervalHandle);
                 }
-            },10);
+            },1);
         }
         
         function doJob(jobData, jobProgress){
@@ -181,10 +182,11 @@
             }
             
         function hashComputer (str){
-            for (var i=0; i<10000; i++){
-                i=i;
-            }
-            return str;
+            var hash = CryptoJS.MD5(str).toString(CryptoJS.enc.Base64);
+            //for (var i=0; i<10000; i++){
+            //    i=i;
+            //}
+            return hash;
         }
         
     </script>

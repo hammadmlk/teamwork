@@ -19,6 +19,7 @@ function start(io) {
   var taskList = new TaskList();
   
   // when job and worker available emit. Check ever x milliseconds 
+  // todo: how to improve?? may be run this function on some event detection?? 
   setInterval(function(){
         var workerId = workerList.nextAvailable();
         var nextTCIndex = taskList.nextTaskChunkIndex();
@@ -55,7 +56,7 @@ function start(io) {
             io.sockets.socket(senderId).emit('answer', password);
             taskList.remove(hash, senderId);
         }
-  }, 100)
+  }, 500)
   
   setInterval(function(){
         console.log("\n\nWORKER LIST::::") 
