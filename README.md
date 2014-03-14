@@ -10,7 +10,7 @@ The system consists of three parts:
 note: for now peer to peer communication is ignored.    
 
 ##Demo:
-The first prototype is worked great. I tested the performance with variable number of machines. The plot of work-done/machine vs num-of-machines was flat (yayyy). This means that we have no bottlenecks on the server side for your distributed password cracking application.
+The first prototype (distributed password cracking app) worked great. I tested the performance with a variable number of machines. The plot of work-done/machine vs num-of-machines was flat (yayyy). This means that we have no bottlenecks on the server side for your distributed password cracking application.
 
 ###Try it your self:
 **Open the worker on a few browsers (preferable on different machines).** 
@@ -48,4 +48,4 @@ Go to the folder where you want to put the app
 
 
 #Confused
-Worry not!!! Wait a month or so. As the project refines we will start properly documentating the system. For now its scope is ever changing changing and so investment on documentation not a fair bet. :)
+Worry not!!! Wait a month or so. As the project refines we will start properly documentating the system. For now its scope is ever changing and time investment on documentation is not a good bet. :)
