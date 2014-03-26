@@ -107,7 +107,8 @@ function print (e){
 console.log(e);
 }
 function msg (elemId, text){
-    console.log("MSG>> "+elemId + ":  " + text)
+    if (elemId!='doJob')
+        console.log("MSG>> "+elemId + ":  " + text)
     //document.getElementById(elemId).innerHTML = text;
 }
 
