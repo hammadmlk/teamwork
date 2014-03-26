@@ -38,8 +38,7 @@ socket.send("test");
 }
 */
 function handleAnswer(answer){
-    alert('the answer is here 2') //
-    console.log('THE ANS IS HERE 2')
+    alert('the Password is:'+answer) // todo: check whats wrong with msg function
     msg("handleAnswer", "got: " + answer);
 }
 
