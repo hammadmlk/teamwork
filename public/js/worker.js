@@ -72,7 +72,7 @@ function doJob(jobData, jobProgress){
     
     //todo: <fix exceeding chunk range issue> change to :
     //for (lastProgress to minof(lastProgress+100x, (chunknum+1)*chunkSize-1)???
-    for (var i = 0; i<10000; i++){
+    for (var i = 0; i<1000; i++){
         var nextPassNum = jobData.chunkSize*jobData.chunkNumber+jobProgress
         
         if (nextPassNum > jobData.chunkSize*jobData.chunkNumber + jobData.chunkSize){
