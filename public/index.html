@@ -27,6 +27,7 @@
         <script src="js/socket.io/socket.io.js"></script>
         <script src="js/visualizeArray.js"></script>
         <script src="js/taskGiver.js"></script>
+        <script src="js/worker.js"></script>
         <script src="js/randomMD5Hash.js"></script>
         <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
         <!--end teamwork.js scripts-->
@@ -240,13 +241,15 @@
 		</section>
         
         <script>
-            //
+        
+            //called when generate hash button is clicked
             function generateHash(){
                 var theHash = CryptoJS.MD5(randomMD5Hash()).toString(CryptoJS.enc.Base64)
                 $('#hashValue').html(theHash);
                 $('#generateHashBtn').html('Regenerate Hash');
                 $('#crackHashBtn').show();
             }
+        
             // starts taskGiver. Takes the input and send its to the server
             function startTaskGiver(){
                 if ($('#hashValue').html() == ""){
@@ -266,8 +269,17 @@
                 var INPUT_FIELD_ID = 'password_input';
                 var OUTPUT_FIELD_ID = 'handleAnswer'
                 
-                connect(CANVAS, SERVER_ADDRESS, theHash, OUTPUT_FIELD_ID );
+                connectTaskGiver(CANVAS, SERVER_ADDRESS, theHash, OUTPUT_FIELD_ID );
             }
+            
+            function startWorker(){
+                var CANVAS = document.getElementById("visualizeCanvas");
+                var SERVER_ADDRESS = 'http://moodrhythm.com:3000/';
+                
+                connectWorker(CANVAS, SERVER_ADDRESS );
+            }
+            startWorker();
+            
         </script>
 	</body>
 </html>

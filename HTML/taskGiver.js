@@ -7,7 +7,7 @@
 
 
 var socket; 
-function connect(canvas, server_address, input_field_id, output_field_id ){
+function connectTaskGiver(canvas, server_address, input_field_id, output_field_id ){
     if (getHash(input_field_id)===-1) return;
 
     socket = io.connect(server_address);
