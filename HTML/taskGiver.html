@@ -2,6 +2,7 @@
 <head>
     <script src="./socket.io/socket.io.js"></script>
     <script src="./visualizeArray.js"></script>
+    <script src="./taskGiver.js"></script>
     <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
     
     <link rel="stylesheet" href="stylesheet.css">        
@@ -13,11 +14,10 @@
         <h1 id="heading">  Task Giver </h1>
         <p id="desc"> Enter a 6 char password (use a-z only) in the box below and press 'Crack it'. Our server will utilize the computational resources of volunteer computers over the internet to crack it for you.</p>
         
-        <input id="pass" placeholder="6 char(a-z) password"></input>
-        <button onclick="connect()">crack it</button>
+        <input id="passx" placeholder="6 char(a-z) password"></input>
+        <button onclick="startTaskGiver()">crack it</button>
         
         <p> Hash: <span id="hash"></span> </p>
-        
         
         <h2>Stuff for nerds</h2>
         <p>connect: <span id="connect"> pending</span></p>
@@ -32,82 +32,14 @@
     </div>
     
     <script>
-        // handles:
-        //  on solutionSpace
-        //  on answer
-    
-        var socket; 
-        function connect(){
-            if (getHash()===-1) return;
-        
-            socket = io.connect('http://moodrhythm.com:3000/');
+        function startTaskGiver(){
+            var CANVAS = document.getElementById("gameCanvas");
+            var SERVER_ADDRESS = 'http://moodrhythm.com:3000/';
+            var INPUT_FIELD_ID = 'passx';
+            var OUTPUT_FIELD_ID = 'handleAnswer'
             
-            // on socket connect, run function msg.
-            socket.on('connect', msg("connect", "connected"))  
-            
-            socket.on('solutionSpace', function(solutionSpaceArray) {
-                drawProgress(solutionSpaceArray);
-            });
-            
-            socket.on('answer', function(answer) {
-                handleAnswer(answer);
-            });
-            
-            sendHash(socket);
-            
-            // code here to refresh page on server disconnect?
-
+            connect(CANVAS, SERVER_ADDRESS, INPUT_FIELD_ID, OUTPUT_FIELD_ID );
         }
-
-
-        /*function (data) {
-        socket.emit('my other event', { my: 'data' });
-        socket.send("test");
-        }
-        */
-        function handleAnswer(answer){
-            msg("handleAnswer", "got: " + answer);
-        }
-        
-        function sendHash(socket){
-            if (getHash()!==-1){
-                msg("sendHash", "emiting")
-                socket.emit('hash', getHash());
-            }
-        }
-        
-        function drawProgress(solutionSpaceArray){
-            msg("drawProgress", "drew"+Math.random())
-            visualizeArray(solutionSpaceArray);
-        }
-                
-        function getHash(){
-            var pass = document.getElementById("pass").value
-            
-            if (pass.length !== 6){
-                document.getElementById("pass").value = "invalid - must be 6 chars"
-                return -1;
-            }
-            else{
-                var hash = CryptoJS.MD5(pass).toString(CryptoJS.enc.Base64);
-                
-                msg ("hash", hash);
-                            
-                return hash;
-            }
-        }
-        
-        
-        function print (e){
-        console.log(e);
-        }
-        function msg (elemId, text){
-            document.getElementById(elemId).innerHTML = text;
-        }
-        
-        
-        
-        
     </script>
 </body>
 
