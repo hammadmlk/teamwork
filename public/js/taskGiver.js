@@ -20,6 +20,8 @@ function connectTaskGiver(canvas, server_address, the_hash, output_field_id ){
     });
     
     socket.on('answer', function(answer) {
+        alert('The answer is here.') //todo:
+        console.log('THE ANS IS HERE')
         handleAnswer(answer);
     });
     
@@ -36,6 +38,8 @@ socket.send("test");
 }
 */
 function handleAnswer(answer){
+    alert('the answer is here 2') //
+    console.log('THE ANS IS HERE 2')
     msg("handleAnswer", "got: " + answer);
 }
 
@@ -56,8 +60,10 @@ console.log(e);
 function msg (elemId, text){
     console.log("MSG>> "+elemId + ":  " + text)
     //todo: fix this bad hack
-    if (elemId == "handleAnswer")
+    if (elemId == "handleAnswer"){
         alert(text);
+        console.log('THE ANS IS HERE 3')
+    }
     //document.getElementById(elemId).innerHTML = text;
 }
 
