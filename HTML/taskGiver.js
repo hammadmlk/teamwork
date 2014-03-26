@@ -36,7 +36,7 @@ socket.send("test");
 }
 */
 function handleAnswer(answer){
-    msg("handleAnswer", "got: " + answer);
+    msg("handleAnswer", "Password for the hash you submitted is: " + answer);
 }
 
 function sendHash(socket, input_field_id){
