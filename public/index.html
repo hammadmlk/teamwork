@@ -23,6 +23,13 @@
 			<link rel="stylesheet" href="css/style.css" />
 		</noscript>
 		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+        <!-- teamwork.js scripts -->
+        <script src="js/socket.io/socket.io.js"></script>
+        <script src="js/visualizeArray.js"></script>
+        <script src="js/taskGiver.js"></script>
+        <script src="js/randomMD5Hash.js"></script>
+        <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
+        <!--end teamwork.js scripts-->
         <!-- Google Analytics -->
         <script>
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -65,57 +72,90 @@
                 </p>
                 <!--a href="http://somelink.com/">sample link</a-->.
 				<footer>
-					<a href="#first" class="button style2 scrolly">What motivates us to make this?</a>
+					<a href="#motivation" class="button style2 scrolly">What motivates us to make this?</a>
 				</footer>
 			</section>
             
 		<!-- Motivation -->
-        <article class="container box style1">
+        <article id="motivation" class="container box style3">
 				<header>
 					<h2>What Motivates Us</h2>
+                    <p>Possibility of having millions of free compute nodes</p>
                 </header>
-                <p style="color:dimgray">
-                    The past decade has seen a major shift from vertical scaling to horizontal scaling. Most modern day computational problems are parallel in nature and usually solved via coordination between distributed systems.
-                    For most of these solutions, the only communication requirement is two way communication between the server and the clients, and/or peer to peer communication between clients.<br/> 
-                </p>
-                <p style="color:cadetblue">                
-                    Modern web browsers are capable of handling extensive computations <a>(benchmarks)</a> as well as perform real two-way communication <a>(WebSockets)</a> and peer-to-peer communication <a>(WebRTC)</a>. This makes them capable of being used in such distributed settings to solve hard problems.<br/>
-                </p>
-                <p style="color:darkolivegreen">                
-                    As alternatives to native programs, web-browser based solutions have lower entry barriers. Volunteers can join the system by just opening a URL; or be forced to join by appending the JavaScript code to the html page served <a>(think ad-networks and proxy services)</a>.<br/>
-                </p>
-                <p style="color:black">
-                    This means access to millions of compute nodes. Precisely what motivates us.<br/>
-                </p>
-                <p style="color:seagreen">
-                    This project will develop a framework for such web-browser based distributed computation and evaluate the effectiveness of using it as an alternate to native code based systems like the very famous SETI-at-home project.
-                </p>
+                <section>
+                    <header>
+                        <h3>Background</h3>
+                    </header>
+                    <p style="color:cadetblue">
+                        The past decade has seen a major shift from vertical scaling to horizontal scaling. Most modern day computational problems are parallel in nature and usually solved via coordination between distributed systems.
+                        For most of these solutions, the only communication requirement is two way communication between the server and the clients, and/or peer to peer communication between clients.<br/> 
+                    </p>
+                    <p style="color:cadetblue">
+                        Modern web browsers are capable of handling extensive computations <a>(benchmarks)</a> as well as perform real two-way communication <a>(WebSockets)</a> and peer-to-peer communication <a>(WebRTC)</a>. This makes them capable of being used in such distributed settings to solve parallel problems.<br/>
+                    </p>
+                </section>
+                <section>
+                    <header>
+                        <h3>Benefits</h3>
+                    </header>
+                    <p style="color:seagreen">                
+                        As alternatives to native programs, web-browser based solutions have lower entry barriers. Volunteers can join the system by just opening a URL; or be forced to join by appending the JavaScript code to the html pages served <a>(think ad-networks and proxy services)</a>.<br/>
+                    </p>
+                    <p style="color:seagreen">
+                        <strong>This means the feasibility of having millions of free compute nodes.</strong> Think of the possibilities: precisely what motivates us.<br/>
+                    </p>
+                </section>
+                <section>
+                    <header>
+                        <h3>What is next</h3>
+                    </header>
+                    <p style="color:darkolivegreen">
+                        This project will develop into a framework for web-browser based distributed computation. Programming models like MapReduce will be supported; developers will be able to submit custom compute-functions that the system will automatically distribute and aggregate.
+                    </p>
+                </section>
+                <footer>
+					<a href="#current_state" class="button style1 scrolly">Current state of teamwork.js?</a>
+				</footer>
         </article>
         
-        <!-- Feature 1 -->
-			<article id="first" class="container box style1 right">
-				<div class="xinner">
+        <!-- Current State -->
+			<article id="current_state" class="container box style1 left">
+				<a href="" class="image">
+                    <!--img src="images/pic01.jpg" alt=""-->
+                    <!-- The canvas-->
+                    <canvas id="visualizeCanvas" 
+                            style="height: 100%; background-color: cadetblue; width: 100%;
+                    "></canvas>
+                </a>
+                <div class="inner">
 					<header>
-						<h3>Motivation 1</h3>
-                        <h2>The every superior web browsers</h2>
+                        <h2>Current State</h2>
 					</header>
-					<p> 
-                        <strong>Computational power of JavaScript:</strong> Recent competition between leading web browser developers has resulted in extremely efficient JavaScript engines.<a href="http://benchmarksgame.alioth.debian.org/u64/javascript.php">Benchmarks</a> suggest that JavaScript computational performance is not far behind Java.<br />
-                    </p>
-                    <p>    
-                        <strong>Real support for two way communication and peer to peer:</strong>WebSockets have allowed efficient, low-latency, real two way communication between browser and server. And now with WebRTC peer-to-peer communication between two browsers is possible.<br />
+					<!--p> 
+                        <strong>blah:</strong> blah blah.<a href="">blah</a> .<br />
+                    </p-->    
+                    <sup> To demonstrate the validity of the idea, at the moment we are using teamwork.js to crack passwords (embarrassingly parallel).</sup>
+                    <br /><br />
+                    <sup style="color:seagreen" id="submitHashMsg">Submit a md5 hash below and teamwork.js will use the computational resources of other visitors of this website to crack it for you*.</sup>
+                    <div class="center">
+                        <button onclick="generateHash()" id="generateHashBtn" class="button style3">Generate Hash</button>
+                    
+                        <div id="hashValue"></div>
+                    
+                        <button onclick="startTaskGiver()" id="crackHashBtn" class="button style1" style="display:none">Crack the Hash</button>
                         
-                    </p>
+                        <sup id="workSubmittedMsg" style="display:none; color:green">The hash has been submitted. Watch the map on right for progress. You will see a popup when answer is received.</sup>
                     
-                    <p>
-                        <strong>Ability to run you code on millions on machines:</strong> Public proxies and ad-networks serve custom pages to millions of users and have the ability to append any piece of JavaScript to the pages they serve.
-                    </p>
-                    
+                        
+                        
+                        
+                    </div>                    
 				</div>
 			</article>
-		
+		<!--Next steps-->
+        
 		<!-- Portfolio -->
-			<!--article class="container box style2">
+			<article class="container box style2">
 				<header>
 					<h2>Magnis parturient</h2>
 					<p>Justo phasellus et aenean dignissim<br />
@@ -135,207 +175,53 @@
 						<div class="3u"><a href="images/fulls/08.jpg" class="image full"><img src="images/thumbs/08.jpg" alt="" title="People come and go and walk away" /></a></div>
 					</div>
 				</div>
-			</article-->
-		
-		<!-- Contact -->
-			<article class="container box style3">
-				<header>
-					<h2>Nisl sed ultricies</h2>
-					<p>Diam dignissim lectus eu ornare volutpat orci.</p>
-				</header>
-				<form>
-					<div class="row half">
-						<div class="6u"><input type="text" class="text" name="name" placeholder="Name" /></div>
-						<div class="6u"><input type="text" class="text" name="email" placeholder="Email" /></div>
-					</div>
-					<div class="row half">
-						<div class="12u">
-							<textarea name="message" placeholder="Message"></textarea>
-						</div>
-					</div>
-					<div class="row">
-						<div class="12u">
-							<ul class="actions">
-								<li><a href="#" class="button form">Send Message</a></li>
-							</ul>
-						</div>
-					</div>
-				</form>
 			</article>
 		
-		<!-- Generic -->
-		<!--
-			<article class="container box style3">
-				<header>
-					<h2>Generic Box</h2>
-					<p>Just a generic box. Nothing to see here.</p>
-				</header>
-				<section>
-					<header>
-						<h3>Paragraph</h3>
-						<p>This is a byline</p>
-					</header>
-					<p>Phasellus nisl nisl, varius id <sup>porttitor sed pellentesque</sup> ac orci. Pellentesque 
-					habitant <strong>strong</strong> tristique <b>bold</b> et netus <i>italic</i> malesuada <em>emphasized</em> ac turpis egestas. Morbi 
-					leo suscipit ut. Praesent <sub>id turpis vitae</sub> turpis pretium ultricies. Vestibulum sit 
-					amet risus elit.</p>
-				</section>
-				<section>
-					<header>
-						<h3>Blockquote</h3>
-					</header>
-					<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget.
-					tempus euismod. Vestibulum ante ipsum primis in faucibus.</blockquote>
-				</section>
-				<section>
-					<header>
-						<h3>Divider</h3>
-					</header>
-					<p>Donec consectetur <a href="#">vestibulum dolor et pulvinar</a>. Etiam vel felis enim, at viverra 
-					ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel. Praesent nec orci 
-					facilisis leo magna. Cras sit amet urna eros, id egestas urna. Quisque aliquam 
-					tempus euismod. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices 
-					posuere cubilia.</p>
-					<hr />
-					<p>Donec consectetur vestibulum dolor et pulvinar. Etiam vel felis enim, at viverra 
-					ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel. Praesent nec orci 
-					facilisis leo magna. Cras sit amet urna eros, id egestas urna. Quisque aliquam 
-					tempus euismod. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices 
-					posuere cubilia.</p>
-				</section>
-				<section>
-					<header>
-						<h3>Unordered List</h3>
-					</header>
-					<ul class="default">
-						<li>Donec consectetur vestibulum dolor et pulvinar. Etiam vel felis enim, at viverra ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel.</li>
-						<li>Donec consectetur vestibulum dolor et pulvinar. Etiam vel felis enim, at viverra ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel.</li>
-						<li>Donec consectetur vestibulum dolor et pulvinar. Etiam vel felis enim, at viverra ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel.</li>
-						<li>Donec consectetur vestibulum dolor et pulvinar. Etiam vel felis enim, at viverra ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel.</li>
-					</ul>
-				</section>
-				<section>
-					<header>
-						<h3>Ordered List</h3>
-					</header>
-					<ol class="default">
-						<li>Donec consectetur vestibulum dolor et pulvinar. Etiam vel felis enim, at viverra ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel.</li>
-						<li>Donec consectetur vestibulum dolor et pulvinar. Etiam vel felis enim, at viverra ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel.</li>
-						<li>Donec consectetur vestibulum dolor et pulvinar. Etiam vel felis enim, at viverra ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel.</li>
-						<li>Donec consectetur vestibulum dolor et pulvinar. Etiam vel felis enim, at viverra ligula. Ut porttitor sagittis lorem, quis eleifend nisi ornare vel.</li>
-					</ol>
-				</section>
-				<section>
-					<header>
-						<h3>Table</h3>
-					</header>
-					<div class="table-wrapper">
-						<table class="default">
-							<thead>
-								<tr>
-									<th>ID</th>
-									<th>Name</th>
-									<th>Description</th>
-									<th>Price</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>45815</td>
-									<td>Something</td>
-									<td>Ut porttitor sagittis lorem quis nisi ornare.</td>
-									<td>29.99</td>
-								</tr>
-								<tr>
-									<td>24524</td>
-									<td>Nothing</td>
-									<td>Ut porttitor sagittis lorem quis nisi ornare.</td>
-									<td>19.99</td>
-								</tr>
-								<tr>
-									<td>45815</td>
-									<td>Something</td>
-									<td>Ut porttitor sagittis lorem quis nisi ornare.</td>
-									<td>29.99</td>
-								</tr>
-								<tr>
-									<td>24524</td>
-									<td>Nothing</td>
-									<td>Ut porttitor sagittis lorem quis nisi ornare.</td>
-									<td>19.99</td>
-								</tr>
-							</tbody>
-							<tfoot>
-								<tr>
-									<td colspan="3"></td>
-									<td>100.00</td>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
-				</section>
-				<section>
-					<header>
-						<h3>Form</h3>
-					</header>
-					<form method="post" action="#">
-						<div class="row">
-							<div class="6u">
-								<input class="text" type="text" name="name" id="name" value="" placeholder="John Doe" />
-							</div>
-							<div class="6u">
-								<input class="text" type="text" name="email" id="email" value="" placeholder="johndoe@domain.tld" />
-							</div>
-						</div>
-						<div class="row">
-							<div class="12u">
-								<select name="department" id="department">
-									<option value="">Choose a department</option>
-									<option value="1">Manufacturing</option>
-									<option value="2">Administration</option>
-									<option value="3">Support</option>
-								</select>
-							</div>
-						</div>
-						<div class="row">
-							<div class="12u">
-								<input class="text" type="text" name="subject" id="subject" value="" placeholder="Enter your subject" />
-							</div>
-						</div>
-						<div class="row">
-							<div class="12u">
-								<textarea name="message" id="message" placeholder="Enter your message"></textarea>
-							</div>
-						</div>
-						<div class="row">
-							<div class="12u">
-								<ul class="actions">
-									<li><a href="#" class="button form">Submit</a></li>
-									<li><a href="#" class="button style3 form-reset">Clear Form</a></li>
-								</ul>
-							</div>
-						</div>
-					</form>
-				</section>
-			</article>
-		-->
+
+		
 		
 		<section id="footer">
 			<ul class="icons">
-				<li><a href="#" class="fa fa-twitter solo"><span>Twitter</span></a></li>
-				<li><a href="#" class="fa fa-facebook solo"><span>Facebook</span></a></li>
-				<li><a href="#" class="fa fa-google-plus solo"><span>Google+</span></a></li>
-				<li><a href="#" class="fa fa-pinterest solo"><span>Pinterest</span></a></li>
-				<li><a href="#" class="fa fa-dribbble solo"><span>Dribbble</span></a></li>
-				<li><a href="#" class="fa fa-linkedin solo"><span>LinkedIn</span></a></li>
+				<li><a href="https://www.facebook.com/hammadmlk" class="fa fa-facebook solo"><span>Facebook</span></a></li>
+				<li><a href="http://linkedin.com/in/hammad2" class="fa fa-linkedin solo"><span>LinkedIn</span></a></li>
 			</ul>
 			<div class="copyright">
 				<ul class="menu">
-					<li>&copy; Untitled. All rights reserved.</li>
-					<li>Design: <a href="http://html5up.net/">HTML5 UP</a></li>
+					<li>Hammad Malik at Cornell University</li>
+					<li>hhm38 at cornell.edu</li>
 				</ul>
 			</div>
 		</section>
-
+        
+        <script>
+            //
+            function generateHash(){
+                var theHash = CryptoJS.MD5(randomMD5Hash()).toString(CryptoJS.enc.Base64)
+                $('#hashValue').html(theHash);
+                $('#generateHashBtn').html('Regenerate Hash');
+                $('#crackHashBtn').show();
+            }
+            // starts taskGiver. Takes the input and send its to the server
+            function startTaskGiver(){
+                if ($('#hashValue').html() == ""){
+                    alert('Generate a Hash First');
+                    return
+                }
+                $('#hashValue').hide();
+                $('#generateHashBtn').hide();
+                $('#crackHashBtn').hide();
+                $('#submitHashMsg').hide();
+                
+                $('#workSubmittedMsg').show();
+                
+                var theHash = $('#hashValue').html();
+                var CANVAS = document.getElementById("visualizeCanvas");
+                var SERVER_ADDRESS = 'http://moodrhythm.com:3000/';
+                var INPUT_FIELD_ID = 'password_input';
+                var OUTPUT_FIELD_ID = 'handleAnswer'
+                
+                connect(CANVAS, SERVER_ADDRESS, theHash, OUTPUT_FIELD_ID );
+            }
+        </script>
 	</body>
 </html>
