@@ -150,6 +150,7 @@
             var divisor = decimal;
             var base=26; var qoutient; var remainder;
             var ans=[];
+            var quotient;
             do {
                 quotient = Math.floor(divisor/base);
                 remainder = divisor%base;
@@ -162,7 +163,7 @@
                 ans.push(alphabets[0]);
             }
             
-            ansx="";
+            var  ansx="";
             while(ans.length>0){
                 ansx+=ans.pop();
             }
