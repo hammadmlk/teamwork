@@ -38,14 +38,14 @@ function visualizeArray(array, canvas){
             if (count<arrlen){
                 count++;
                 var red, green, blue;
-                if (array[count]==-1){
-                    red = 0; green=0; blue =0; 
-                }else if (array[count] ==0){
-                    red = 0; green=0; blue =255;
-                }else if (array[count] ==1){
-                    red = 255; green=0; blue =0;
-                }else if (array[count] ==2){
+                if (array[count]==-1){  //white
+                    red = 255; green=255; blue =255; 
+                }else if (array[count] ==0){    //yellow
+                    red = 255; green=255; blue =0;
+                }else if (array[count] ==1){    //green
                     red = 0; green=255; blue =0;
+                }else if (array[count] ==2){    //red
+                    red = 255; green=0; blue =0;
                 }
                
                 context.fillStyle="rgb("+red+","+green+","+blue+")"; //function that returns color
