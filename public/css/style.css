@@ -24,7 +24,7 @@
 	{
 		font-family: 'Source Sans Pro', sans-serif;
 		font-size: 18pt;
-		line-height: 1.75em;
+		line-height: 1.5em;
 		font-weight: 300;
 		letter-spacing: 1px;
 		color: #3a3939;
@@ -61,6 +61,13 @@
 	{
 		font-weight: 400;
 	}
+    
+    small
+        {
+        font-size: 0.8em;
+        line-height: 1.5em;
+        display: inline-block;
+    }
 	
 	em, i
 	{
