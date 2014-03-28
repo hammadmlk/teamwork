@@ -20,8 +20,8 @@ function visualizeArray(array, canvas){
       
     var arrlen = array.length;        
    
-    // calc num of cols and rows in approx ratio 4:3
-    var cols = Math.ceil(Math.sqrt((4/3)*(arrlen)))
+    // calc num of cols and rows in approx ratio 3:4
+    var cols = Math.ceil(Math.sqrt((3/3)*(arrlen)))
     var rows = Math.ceil(arrlen/cols)
     
     //console.log(ee+"cols: "+ cols + "  rows: " + rows);
