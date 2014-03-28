@@ -132,20 +132,21 @@
 					<header>
                         <h2>Current State</h2>
 					</header>
-					<!--p> 
-                        <strong>blah:</strong> blah blah.<a href="">blah</a> .<br />
-                    </p-->    
-                    <sup> To demonstrate the validity of the idea, at the moment we are using teamwork.js to crack passwords (embarrassingly parallel).</sup>
-                    <br /><br />
-                    <sup style="color:seagreen" id="submitHashMsg">Submit a md5 hash below and teamwork.js will use the computational resources of other visitors of this website to crack it for you*.</sup>
-                    <div class="center">
+					<p> 
+                        To demonstrate the validity of the idea, at the moment we are using teamwork.js to crack passwords (embarrassingly parallel).
+                    </p>
+                    <p style="color:seagreen" id="submitHashMsg"><small>
+                        Ask some friends to visit this webpage. Then submit a md5 hash below and see teamwork.js use the computational resources of other visitors to crack the hash for you :)
+                    </small></p>
+                    <div class="">
                         <button onclick="generateHash()" id="generateHashBtn" class="button style3">Generate Hash</button>
                     
-                        <div id="hashValue"></div>
+                        <div><small id="hashValue"></small></div>
                     
                         <button onclick="startTaskGiver()" id="crackHashBtn" class="button style1" style="display:none">Crack the Hash</button>
                         
-                        <sup id="workSubmittedMsg" style="display:none; color:green">The hash has been submitted. Watch the map on right for progress. You will see a popup when answer is received.</sup>
+                        <p id="workSubmittedMsg" style="display:none; color:green">The hash has been submitted. Watch the map on right <small>(or above)</small> for progress. You will see a popup when an answer is received.<br/>
+                        <small>*ask more people to visit the page for faster results.</small></p>
                     </div>                    
 				</div>
 			</article>
@@ -160,10 +161,9 @@
 					<p style="color:seagreen"> 
                         We measured the performance of the system with variable number of nodes. The results are promising, for each new machine added the performance increases by a fixed constant.
                     </p>
-                    <p class="shrinkText"><small>
+                    <p><small>
                         * when using machines with identical hardware and software.
-                        </small>
-                    </p>
+                    </small></p>
 				</div>
                 
                 <div class="inner gallery">
@@ -173,7 +173,6 @@
                             <img src="images/pic01.jpg" alt="" title="Performance when scaling" style="width: 100%; height: auto; bottom: 0; margin: auto;">
                         </a>	
 					</div>
-					
 				</div>
 			</article>
         
