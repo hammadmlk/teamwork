@@ -36,6 +36,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
+app.get('/video', routes.video);
 app.get('/users', user.list);
 
 var server = http.createServer(app)

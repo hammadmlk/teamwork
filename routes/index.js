@@ -12,3 +12,13 @@ exports.index = function(req, res){
   res.end();  
   
 };
+
+
+exports.video = function(req, res){
+  
+  res.writeHead(302, {
+    'Location': '/video.html'
+    });
+  res.end();  
+  
+};
