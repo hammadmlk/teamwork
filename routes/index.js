@@ -13,7 +13,7 @@ exports.index = function(req, res){
   
 };
 
-
+//get video page
 exports.video = function(req, res){
   
   res.writeHead(302, {
