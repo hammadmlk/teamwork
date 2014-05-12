@@ -1,19 +1,19 @@
 "use strict";
 
-// Task class
-function Task(hash, senderId){
-this.hash = hash;
+// WorkSet class
+function WorkSet(workset, senderId){
+this.foo = workset.foo;
+this.aggr=workser.aggr;
+this.workunits=makeWorkUnits(workset.pairlist);
 this.senderId = senderId;
 this.status = "pending";
-this.password = "not known";
-this.chunks = makeChunks(308915775/152551, -1);
+this.AnswerPairList = {};
+
 // public functions
-this.passwordFound = function (chunkindex, password){
-    this.changeChunkValue(chunkindex,2);
-    this.password = password;
+this.complete = function (){
     this.status = "complete";
 }
-this.changeChunkValue = function(index, newval){
+this.changeWorkUnitValue = function(index, newval){
     this.chunks[index]=newval
 }
 this.nextChunkIndex = function(){
@@ -32,13 +32,17 @@ this.print = function(){
 }
 
 // private functions
-function makeChunks(howmany, status){
+function makeWorkUnits(pairlist){
 // status =   -1: not started,   0: started but pending   1: complete no success   2: complete success
-    var chunks=[];
-    while(howmany--){
-        chunks.push(status)
+    var workunits=[];
+    
+    for(var i=0; i<pairlist.length(); i++){
+        var workunit = pairlist[i];
+        workunit.status = -1;
+        workunit.workerid = "0";
+        workunits.push(workunit)
     }
-    return chunks;
+    return workunits;
 }
 
 }
