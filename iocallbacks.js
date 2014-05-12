@@ -1,8 +1,8 @@
 //this file has all the callbacks that the socket.io server needs to handle.
 // now now all callbacks that it makes or answers
 
-var TaskList = require('./TaskList.js')
-var WorkerList = require('./WorkerList.js')
+var TaskList = require('./TaskList.js') //WorkSetList
+var WorkerList = require('./WorkerList.js') 
 
 //clear window
 var util = require('util');
@@ -79,7 +79,8 @@ function start(io) {
             taskList.removeSender(socket.id)    
     })
     
-    socket.on("hash", function(theHash){
+    socket.on("WorkSet", function(theHash){
+        
         taskList.add(theHash, socket.id)
         console.log("new hash received: ", theHash, socket.id);
     });
