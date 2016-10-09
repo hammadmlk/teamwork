@@ -8,7 +8,7 @@ var alreadyWorking = 0;
 
 var socket; 
 function connectWorker(canvas, server_address){
-    socket = io.connect(server_address);
+    socket = io.connect();
     
     // on socket connect, run function msg.
     socket.on('connect', msg("connect", "connected"))  

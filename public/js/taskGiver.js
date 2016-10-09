@@ -7,10 +7,10 @@
 
 
 var socket; 
-function connectTaskGiver(canvas, server_address, the_hash, output_field_id ){
+function connectTaskGiver(canvas, the_hash, output_field_id ){
     if (typeof the_hash != 'string') return;
 
-    socket = io.connect(server_address);
+    socket = io.connect();
     
     // on socket connect, run function msg.
     socket.on('connect', msg("connect", "connected"))  

@@ -38,7 +38,7 @@
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
           })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-          ga('create', 'UA-49344022-1', 'moodrhythm.com:3000');
+          ga('create', 'UA-49344022-1', 'teamworkjs.com');
           ga('send', 'pageview');
 
         </script>
@@ -265,18 +265,16 @@
                 
                 var theHash = $('#hashValue').html();
                 var CANVAS = document.getElementById("visualizeCanvas");
-                var SERVER_ADDRESS = 'http://teamworkjs.com/';
                 var INPUT_FIELD_ID = 'password_input';
                 var OUTPUT_FIELD_ID = 'handleAnswer'
                 
-                connectTaskGiver(CANVAS, SERVER_ADDRESS, theHash, OUTPUT_FIELD_ID );
+                connectTaskGiver(CANVAS, theHash, OUTPUT_FIELD_ID );
             }
             
             function startWorker(){
                 var CANVAS = document.getElementById("visualizeCanvas");
-                var SERVER_ADDRESS = 'http://teamworkjs.com/';
                 
-                connectWorker(CANVAS, SERVER_ADDRESS );
+                connectWorker(CANVAS);
             }
             startWorker();
             

@@ -16,13 +16,12 @@ this.passwordFound = function (chunkindex, password){
 this.changeChunkValue = function(index, newval){
     this.chunks[index]=newval
 }
-this.nextChunkIndex = function(status){
+this.nextChunkIndex = function(){
 // return the first chunk with status 'not started (-1)'
 // if none found return -1;
-// xtodo: none 'not started' return first 'started but pending' <<-- done now
-    status = status || -1;
+// todo: none 'not started' return first 'started but pending'
     for(var i=0; i<this.chunks.length; i++){
-        if (this.chunks[i]===status){
+        if (this.chunks[i]===-1){
             return i;
         }
     }
@@ -82,21 +81,19 @@ this.remove = function(hash, senderId){
     return ir    
 };
 this.nextTaskChunkIndex = function (){
-    // return the first task with status "pending' << wrong comment
+    // return the first task with status "pending'
     // if none found return -1;
-    // xtodo: what if all chunks of the 'pending' task are already distributed?? << solved
-    for(var status=-1;i<=0;i++){ //first find task not distributed. then find tasks not completed.
-      for(var i=0; i<this.tasks.length; i++){
-          if (this.tasks[i].status === "pending"){
-              var ti = i; // task index
-              var ci = this.tasks[i].nextChunkIndex(status) // chunk index
-              
-              if(ci!==-1){
-                  return {task: ti, chunk: ci};
-              }
-          }
-      }
-    }    
+    // todo: what if all chunks of the 'pending' task are already distributed??
+    for(var i=0; i<this.tasks.length; i++){
+        if (this.tasks[i].status === "pending"){
+            var ti = i; // task index
+            var ci = this.tasks[i].nextChunkIndex() // chunk index
+            
+            if(ci!==-1){
+                return {task: ti, chunk: ci};
+            }
+        }
+    }
     return -1;
 }
 this.chunkSolution = function (senderId, chunkIndex, sol, password){
